@@ -47,9 +47,9 @@ public class OnboardingAdapter extends PagerAdapter{
         for (int a = 0; a < count; a++) {
             View child = paginationCircles.getChildAt(a);
             if (a == position) {
-                child.setBackgroundColor(0xffffffff);
+                child.setBackgroundResource(R.drawable.white_circle);
             } else {
-                child.setBackgroundColor(0xffA1D7FD);
+                child.setBackgroundResource(R.drawable.light_sky_blue_circle);
             }
         }
     }

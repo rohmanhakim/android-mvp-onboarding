@@ -4,22 +4,4 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
-    <View
-        android:layout_width="5dp"
-        android:layout_height="5dp"
-        android:background="@drawable/light_sky_blue_circle"/>
-
-    <View
-        android:layout_width="5dp"
-        android:layout_height="5dp"
-        android:background="@drawable/light_sky_blue_circle"
-        android:layout_marginLeft="7dp"
-        android:layout_marginStart="7dp"/>
-
-    <View
-        android:layout_width="5dp"
-        android:layout_height="5dp"
-        android:background="@drawable/light_sky_blue_circle"
-        android:layout_marginLeft="7dp"
-        android:layout_marginStart="7dp"/>
 </LinearLayout>

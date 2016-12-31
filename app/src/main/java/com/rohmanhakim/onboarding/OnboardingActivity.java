@@ -1,11 +1,13 @@
 package com.rohmanhakim.onboarding;
 
 import android.annotation.TargetApi;
+import android.content.res.Resources;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -13,7 +15,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+
 
 public class OnboardingActivity extends AppCompatActivity {
 
@@ -63,30 +66,49 @@ public class OnboardingActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.lightSkyBlue));
     }
 
-    private void initViewPager(){
+    private void initViewPager() {
         viewPager = (ViewPager) findViewById(R.id.vp_item);
         imgIcon = (ImageView) findViewById(R.id.img_icon);
         imgIconNext = (ImageView) findViewById(R.id.img_icon_next);
         paginationCircles = (ViewGroup) findViewById(R.id.pagination_circles);
-        viewPager.setAdapter(new OnboardingAdapter(this.titles,this.messages,this.paginationCircles));
+
+        for (int i = 0; i < titles.length; i++) {
+            View circle = new View(OnboardingActivity.this);
+            circle.setBackgroundResource(R.drawable.light_sky_blue_circle);
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    Helper.convertDensityToPixel(this,5),
+                    Helper.convertDensityToPixel(this,5));
+            if(i == 0) {
+                layoutParams.setMargins(0, 0, 0, 0);
+            } else {
+                layoutParams.setMargins(Helper.convertDensityToPixel(this,7), 0, 0, 0);
+            }
+            circle.setLayoutParams(layoutParams);
+            paginationCircles.addView(circle);
+        }
+
+        viewPager.setAdapter(new OnboardingAdapter(this.titles, this.messages, this.paginationCircles));
         viewPager.setPageMargin(0);
         viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
-            public void onPageSelected(int position) {}
+            public void onPageSelected(int position) {
+            }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state == ViewPager.SCROLL_STATE_IDLE || state == ViewPager.SCROLL_STATE_SETTLING){
-                    if(lastPage != viewPager.getCurrentItem()){
+                if (state == ViewPager.SCROLL_STATE_IDLE || state == ViewPager.SCROLL_STATE_SETTLING) {
+                    if (lastPage != viewPager.getCurrentItem()) {
                         lastPage = viewPager.getCurrentItem();
 
                         final ImageView fadeOutImage;
                         final ImageView fadeInImage;
-                        if(imgIcon.getVisibility() == View.VISIBLE){
+                        if (imgIcon.getVisibility() == View.VISIBLE) {
                             fadeOutImage = imgIcon;
                             fadeInImage = imgIconNext;
                         } else {
