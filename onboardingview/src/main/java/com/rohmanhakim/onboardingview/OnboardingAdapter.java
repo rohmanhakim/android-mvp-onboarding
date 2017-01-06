@@ -1,4 +1,4 @@
-package com.rohmanhakim.onboarding;
+package com.rohmanhakim.onboardingview;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
@@ -6,10 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * Created by rohmanhakim <rohmanhakim@live.com> on 12/31/16 21:31 21:39.
+ * Created by rohmanhakim <rohmanhakim@live.com> on 1/6/17 17:25.
  */
 public class OnboardingAdapter extends PagerAdapter{
-
     int itemCount;
     String[] titles;
     String[] messages;

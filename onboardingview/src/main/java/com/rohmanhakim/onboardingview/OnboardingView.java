@@ -1,42 +1,52 @@
-package com.rohmanhakim.onboarding;
+package com.rohmanhakim.onboardingview;
 
-import android.annotation.TargetApi;
-import android.content.res.Resources;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import android.content.Context;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+/**
+ * Created by rohmanhakim <rohmanhakim@live.com> on 12/31/16 23:58.
+ */
+public class OnboardingView extends RelativeLayout {
+    private int[] icons;
+    private String[] titles;
+    private String[] messages;
+    private ViewPager viewPager;
+    private ImageView imgIcon;
+    private ImageView imgIconNext;
+    private Context context;
+    private int lastPage;
 
-public class OnboardingActivity extends AppCompatActivity {
+    public OnboardingView(Context context) {
+        super(context);
+        initialize(context);
+    }
 
-    int[] icons;
-    String[] titles;
-    String[] messages;
+    public OnboardingView(Context context, AttributeSet attrs){
+        super(context, attrs);
+        initialize(context);
+    }
 
-    int lastPage = 0;
+    public OnboardingView(Context context, AttributeSet attrs, int defStyle){
+        super(context,attrs,defStyle);
+        initialize(context);
+    }
 
-    ViewPager viewPager;
-    ImageView imgIcon;
-    ImageView imgIconNext;
-    ViewGroup paginationCircles;
+    private void initialize(Context context){
+        this.context = context;
+        View rootView = inflate(context, R.layout.activity_onboarding, this);
+        initResources();
+        initViewPager();
+    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_onboarding);
-        initStatusBarColor();
-
+    protected void initResources(){
         icons = new int[]{
                 R.drawable.onboarding_icon_1,
                 R.drawable.onboarding_icon_2,
@@ -54,41 +64,31 @@ public class OnboardingActivity extends AppCompatActivity {
                 "We handle Your money as ours. Every pieces is counted",
                 "No one like to wait, so do us. We make this apps fastest as we can"
         };
-
-        initViewPager();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void initStatusBarColor() {
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.lightSkyBlue));
     }
 
     private void initViewPager() {
         viewPager = (ViewPager) findViewById(R.id.vp_item);
         imgIcon = (ImageView) findViewById(R.id.img_icon);
         imgIconNext = (ImageView) findViewById(R.id.img_icon_next);
-        paginationCircles = (ViewGroup) findViewById(R.id.pagination_circles);
+        ViewGroup paginationCircles = (ViewGroup) findViewById(R.id.pagination_circles);
 
         for (int i = 0; i < titles.length; i++) {
-            View circle = new View(OnboardingActivity.this);
+            View circle = new View(context);
             circle.setBackgroundResource(R.drawable.light_sky_blue_circle);
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    Helper.convertDensityToPixel(this,5),
-                    Helper.convertDensityToPixel(this,5));
+                    Helper.convertDensityToPixel(context,5),
+                    Helper.convertDensityToPixel(context,5));
             if(i == 0) {
                 layoutParams.setMargins(0, 0, 0, 0);
             } else {
-                layoutParams.setMargins(Helper.convertDensityToPixel(this,7), 0, 0, 0);
+                layoutParams.setMargins(Helper.convertDensityToPixel(context,7), 0, 0, 0);
             }
             circle.setLayoutParams(layoutParams);
             paginationCircles.addView(circle);
         }
 
-        viewPager.setAdapter(new OnboardingAdapter(this.titles, this.messages, this.paginationCircles));
+        viewPager.setAdapter(new OnboardingAdapter(this.titles, this.messages, paginationCircles));
         viewPager.setPageMargin(0);
         viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -121,7 +121,7 @@ public class OnboardingActivity extends AppCompatActivity {
                         fadeInImage.clearAnimation();
                         fadeOutImage.clearAnimation();
 
-                        Animation outAnimation = AnimationUtils.loadAnimation(OnboardingActivity.this, R.anim.icon_anim_fade_out);
+                        Animation outAnimation = AnimationUtils.loadAnimation(context, R.anim.icon_anim_fade_out);
                         outAnimation.setAnimationListener(new Animation.AnimationListener() {
                             @Override
                             public void onAnimationStart(Animation animation) {
@@ -138,7 +138,7 @@ public class OnboardingActivity extends AppCompatActivity {
                             }
                         });
 
-                        Animation inAnimation = AnimationUtils.loadAnimation(OnboardingActivity.this, R.anim.icon_anim_fade_in);
+                        Animation inAnimation = AnimationUtils.loadAnimation(context, R.anim.icon_anim_fade_in);
                         inAnimation.setAnimationListener(new Animation.AnimationListener() {
                             @Override
                             public void onAnimationStart(Animation animation) {
